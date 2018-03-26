@@ -27,6 +27,19 @@
         return $connection;
     }
 
+    function sendGenericQuery($query)
+    {
+        $connection = ConnectToDatabase();
+        try {
+            $connection->query($query);
+            $connection = null;
+        }
+        catch (Exception $e)
+        {
+            return false;
+        }
+        return true;
+    }
 
     # Section 1
     # Select Key statements.
