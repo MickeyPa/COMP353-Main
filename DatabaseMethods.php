@@ -5,6 +5,9 @@
     # 2 - select * statements
     # 3 - transaction methods
 
+    # This is just a base of what I think we need to run the program successfully from the frontend.
+    # Feel free to modify the file as needed!
+
     function ConnectToDatabase()
     {
         $servername = "ryc353.encs.concordia.ca";
@@ -23,8 +26,6 @@
 
         return $connection;
     }
-
-    # Allows user to input any SELECT statement.
 
     function sendSelectQuery($query)
     {
