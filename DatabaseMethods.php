@@ -27,18 +27,24 @@
         return $connection;
     }
 
-    function sendGenericQuery($query)
+    function sendSelectQuery($query)
     {
-        $connection = ConnectToDatabase();
-        try {
-            $connection->query($query);
-            $connection = null;
+        $q = explode(" ", $query)[0];
+        if (strcasecmp($q, "SELECT") == 0) {
+
+            $connection = ConnectToDatabase();
+            try {
+                $connection->query($query);
+                $connection = null;
+            } catch (Exception $e) {
+                return false;
+            }
+            return true;
+
         }
-        catch (Exception $e)
-        {
+        else {
             return false;
         }
-        return true;
     }
 
     # Section 1
