@@ -138,10 +138,10 @@
         try {
             $connection->query("INSERT INTO employees 
                                (SIN, Name, DateOfBirth, Gender, Address, PhoneNumber, 
-                               Salary, Supervisor, DepartmentNumber) 
+                               Salary, SupervisorId, DepartmentNumber) 
                                VALUES ($values->SIN, $values->Name, $values->DateOfBirth, 
                                $values->Gender, $values->Address, $values->PhoneNumber, 
-                               $values->Salary, $values->Supervisor, $values->DepartmentNumber)");
+                               $values->Salary, $values->SupervisorId, $values->DepartmentNumber)");
             $connection = null;
         }
         catch (Exception $e)
@@ -158,7 +158,7 @@
             $connection->query("UPDATE employees set Name = $values->Name, 
                                DateofBirth = $values->DateOfBirth, Gender = $values->Gender, 
                                Address = $values.Address, PhoneNumber = $values->PhoneNumber, 
-                               Salary = $values->Salary, Supervisor = $values->Supervisor, 
+                               Salary = $values->Salary, SupervisorId = $values->SupervisorId, 
                                DepartmentNumber = $values->DepartmentNumber
                                WHERE SIN = $values->SIN;");
             $connection = null;
@@ -177,7 +177,7 @@
             $connection->query("UPDATE departments SET Manager = null, StartDate = null WHERE Manager = $SIN;");
             $connection->query("DELETE FROM dependents WHERE Guardian = $SIN;");
             $connection->query("DELETE FROM workson WHERE Employee = $SIN;");
-            $connection->query("UPDATE employees SET Supervisor = null WHERE Supervisor = $SIN;");
+            $connection->query("UPDATE employees SET SupervisorId = null WHERE SupervisorId = $SIN;");
             $connection->query("DELETE FROM employees WHERE SIN = $SIN;");
             $connection = null;
         }
