@@ -20,9 +20,12 @@
 		</script>
 	
 		<?php
+		if(isset($_POST['address'])){
+			echo $_POST['addingForm'];
+		}
 			if(isset($_POST['table']) || isset($_POST['addingForm'])){
         $PDOresults;
-        echo "<form id='addingForm' onsubmit='addLocation(this)' method='post'>";
+        echo "<form id='addingForm' method='post'>";
         switch($_POST['table']){
           case "Employee":
         	echo "SIN: <input type='number' name='SIN'/></br>";
@@ -37,18 +40,18 @@
             	echo "Supervisor: <select name='supervisorID'>";
           	$t = 0;
             	while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
-							{
-								foreach($row as $column)
-								{
-									$t++;
-									if($t == 1)
-										echo "<option value=".$column.">";
-									if($t == 2)
-										echo $column."</option>";
-									if($t == 9)
-										$t = 0;
-								}
-							}
+		{
+			foreach($row as $column)
+			{
+				$t++;
+				if($t == 1)
+					echo "<option value=".$column.">";
+				if($t == 2)
+					echo $column."</option>";
+				if($t == 9)
+					$t = 0;
+			}
+		}
             	echo "</select>";
             	$PDOresults = getDepartmentsKeys();
 
@@ -186,5 +189,6 @@
           echo "</form>";
       }
 		?>
+		
 	</body>
 </html>

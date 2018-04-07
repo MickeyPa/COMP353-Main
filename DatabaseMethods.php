@@ -19,7 +19,6 @@
         try {
             $connection = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
             $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo "Connected successfully <br/>";
         } catch (PDOException $e) {
             echo "Connection failed: " . $e->getMessage();
         }
@@ -312,10 +311,8 @@
         }
         catch (Exception $e)
         {
-	    alert("WOW, GOOD JOB. Really, like, it's great work... " + $Address)
             return false;
         }
-	alert("You did it you crazy bastard! #" + $Address);
         return true;
     }
 
@@ -456,4 +453,5 @@
         return true;
     }
 
+	
 ?>
