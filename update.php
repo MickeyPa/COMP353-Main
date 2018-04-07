@@ -4,58 +4,69 @@
 		?>
 		<form id="formE" method="post">
 			<label><input type = "radio" name="table" value="Employee"/> Employee</label></br>
-			<label><input type = "radio" name="table" value="Dependent"/> Dependent</label></br>
+			<label><input type = "radio" name="table" value="Dependents"/> Dependent</label></br>
 			<label><input type = "radio" name="table" value="Department"/> Department</label></br>
-			<label><input type = "radio" name="table" value="Location"/> Location</label></br>
-			<label><input type = "radio" name="table" value="DepartmentLocation"/> Department Location </label></br>
 			<label><input type = "radio" name="table" value="Project"/> Project </label></br>
-      <label><input type = "radio" name="table" value="WorksOn"/> Works On </label></br>
+			<label><input type = "radio" name="table" value="WorksOn"/> Works On </label></br>
 		</form>
 		<script>
-      $(document).ready(function() {
-        $('input[type=radio][name=table]').change(function(){
-                                           $(document.getElementById('formE')).submit();
-                                           });
-      });
-		</script>
-	
+      			$(document).ready(function()
+			{
+        			$('input[type=radio][name=table]').change(function(){$(document.getElementById('formE')).submit();});
+      			});
+		</script>	
 		<?php
-		if(isset($_POST['formName'])){
+		if(isset($_POST['formName']))
+		{
 			echo $_POST['formName'];
-			switch($_POST['formName']){
+			switch($_POST['formName'])
+			{
 				case "Employee":
-					addEmployee($_POST);
+					modifyEmployee($_POST);
 					break;
 				case "Dependent":
-					addDependent($_POST);
+					modifyDependent($_POST);
 					break;
 				case "Department":
-					addDepartment($_POST);
-					break;
-				case "Location":
-					addLocation($_POST);
-					break;
-				case "DepartmentLocation":
-					addDepartmentLocation($_POST);
+					modifyDepartment($_POST);
 					break;
 				case "Project":
-					addProject($_POST);
+					modifyProject($_POST);
 					break;
 				case "WorksOn":
-					addWorksOn($_POST);
+					modifyWorksOn($_POST);
 					break;
 			}
 		}
-			if(isset($_POST['table']) || isset($_POST['formName'])){
-		$TableType;
-        if(isset($_POST['table'])) $TableType = $_POST['table'];
-		else $TableType = $_POST['formName'];
-		$PDOresults;
-        echo "<form id='addingForm' method='post'>";
-		echo "<input type='text' name='formName' value=".$TableType." hidden/>";
+		if(isset($_POST['table']) || isset($_POST['formName']))
+		{
+			$TableType;
+        		if(isset($_POST['table'])) 
+				$TableType = $_POST['table'];
+			else 
+				$TableType = $_POST['formName'];
+			$PDOresults;
+        		echo "<form id='addingForm' method='post'>";
+			echo "<input type='text' name='formName' value=".$TableType." hidden/>";
         switch($TableType){
           case "Employee":
-        	echo "SIN: <input type='number' name='SIN'/></br>";
+		$PDOresults = getEmployees();
+        	echo "SIN: <select> name='sin'>";		
+		while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
+		{
+			foreach($row as $column)
+			{
+				$t++;
+				if($t == 1)
+				{
+					echo "<option value=".$column.">";
+					echo $column."</option>";
+				}
+				if($t == 9)
+					$t = 0;
+			}
+		}
+		echo "</select></br>";
             	echo "Name: <input type='text' name='Name'/></br>";
             	echo "Date Of Birth: <input type='date' name='DateOfBirth'/></br>";
             	echo "Gender: <input type='text' name='Gender'/></br>";
@@ -78,7 +89,7 @@
 					$t = 0;
 			}
 		}
-            	echo "</select></br>";
+            	echo "</select>";
             	$PDOresults = getDepartmentsKeys();
 
             	echo "Department: <select name='DepartmentNumber'>";
@@ -89,17 +100,17 @@
 									echo "<option value=$column> $column</option>";
 								}
 							}
-            	echo "</select></br>";
+            	echo "</select>";
             break;
             
             
-            case "Dependent":
+            case "Dependents":
         			echo "SIN: <input type='number' name='SIN'/></br>";
-            	echo "Name: <input type='text' name='Name'/></br>";
-            	echo "Date Of Birth: <input type='date' name='DateOfBirth'/></br>";
-            	echo "Gender: <input type='text' name='Gender'/></br>";
+            	echo "Name: <input type='text' name='name'/></br>";
+            	echo "Date Of Birth: <input type='date' name='dateofbirth'/></br>";
+            	echo "Gender: <input type='text' name='gender'/></br>";
 		$PDOresults = getEmployees();
-            	echo "Guardian: <select name='Guardian'>";
+            	echo "Guardian: <select name='guardianID'>";
           		$t = 0;
             	while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
 							{
@@ -114,13 +125,12 @@
 										$t = 0;
 								}
 							}
-            	echo "</select></br>";
+            	echo "</select>";
             break;
             case "Department":
-					echo "Number: <input type='number' name='Number'/></br>";
-        			echo "Name: <input type='text' name='Name'/></br>";
+        			echo "Name: <input type='text' name='name'/></br>";
 		$PDOresults = getEmployees();
-            	echo "Manager: <select name='Manager'>";
+            	echo "Manager: <select name='managerID'>";
           		$t = 0;
             	while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
 							{
@@ -135,16 +145,15 @@
 										$t = 0;
 								}
 							}
-            	echo "</select></br>";
-            	echo "Start Date: <input type='date' name='StartDate'/></br>";
+            	echo "</select>";
+            	echo "Start Date: <input type='date' name='startdate'/></br>";
             break;
             case "Location":
-        			echo "Address: <input type='text' name='Address'/></br>";
+        			echo "Address: <input type='text' name='address'/></br>";
             break;
             case "DepartmentLocation":
-				echo "Department Number: <input type='number' name='DepartmentNumber'/></br>";
         			$PDOresults = getLocationsKeys();
-            	echo "Location: <select name='Address'>";
+            	echo "Location: <select name='locationID'>";
           		
             	while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
 							{
@@ -153,13 +162,14 @@
 									echo "<option value=$column> $column</option>";
 								}
 							}
-            	echo "</select></br>";
+            	echo "</select>";
+		echo "Address: <input type='text' name='address'/></br>";
             break;
             case "Project":
-        			echo "Id: <input type='number' name='Id'/></br>";
-            	echo "Name: <input type='text' name='Name'/></br>";
-				$PDOresults = getLocations();
-            	echo "Address: <select name='Address'>";
+        			echo "Id: <input type='number' name='id'/></br>";
+            	echo "Name: <input type='text' name='name'/></br>";
+		$PDOresults = getDepartmentLocations();
+            	echo "Department Location: <select name='depLocation'>";
           		$t = 0;
             	while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
 							{
@@ -174,11 +184,11 @@
 									}
 								}
 							}
-            	echo "</select></br>";
+            	echo "</select>";
             break;
             case "WorksOn":
         			$PDOresults = getEmployees();
-            	echo "Employee: <select name='Employee'>";
+            	echo "Manager: <select name='managerID'>";
           		
             	$t = 0;
             	while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
@@ -194,9 +204,9 @@
 										$t = 0;
 								}
 							}
-            	echo "</select></br>";
+            	echo "</select>";
 		$PDOresults = getProjectsKeys();
-            	echo "Project: <select name=ProjectId'>";
+            	echo "Project: <select name=projectID'>";
           		
             	while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
 							{
@@ -205,14 +215,14 @@
 									echo "<option value=$column> $column</option>";
 								}
 							}
-            	echo "</select></br>";
-		echo "Hours Worked: <input type='number' name='HoursWorked'/></br>";
+            	echo "</select>";
+		echo "SIN: <input type='number' name='SIN'/></br>";
             break;
 	
           default: echo "test2";
 		}
 		
-		  echo "<input type='submit' value='Submit'>";
+		  echo "</br><input type='submit' value='Submit'>";
           echo "</form>";
       }
 		?>

@@ -10,7 +10,8 @@
     <body>
         <p> The Social Hour Intelligence Team. (aka The S.H.I.T.) </p>
 	<div id = "firstBox">
-		<a id = "add" href="add.php"> Add Employee </a>
-		<a id = "remove" href="removeEmployee.php"> Remove Employee</a>
+		<a id = "add" href="add.php"> Add </a>
+		<a id = "update" href="update.php"> Update </a>
+		<a id = "remove" href="removeEmployee.php"> Remove Employee </a>
 		<a href="query.php"> Query </a>
 	</div>

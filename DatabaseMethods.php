@@ -134,16 +134,19 @@
     {
         $connection = ConnectToDatabase();
         try {
+		$day = strtotime($_POST["DateOfBirth"]);
+		$day = date('Y-m-d H:i:s', $day);
             $connection->query("INSERT INTO employees 
                                (SIN, Name, DateOfBirth, Gender, Address, PhoneNumber, 
                                Salary, SupervisorId, DepartmentNumber) 
-                               VALUES ($values->SIN, $values->Name, $values->DateOfBirth, 
-                               $values->Gender, $values->Address, $values->PhoneNumber, 
-                               $values->Salary, $values->SupervisorId, $values->DepartmentNumber)");
+                               VALUES ($values[SIN], \"$values[Name]\", \"$day\", 
+                               \"$values[Gender]\", \"$values[Address]\", $values[PhoneNumber], 
+                               $values[Salary], $values[SupervisorId], $values[DepartmentNumber])");
             $connection = null;
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
@@ -153,16 +156,19 @@
     {
         $connection = ConnectToDatabase();
         try {
-            $connection->query("UPDATE employees set Name = $values->Name, 
-                               DateofBirth = $values->DateOfBirth, Gender = $values->Gender, 
-                               Address = $values.Address, PhoneNumber = $values->PhoneNumber, 
-                               Salary = $values->Salary, SupervisorId = $values->SupervisorId, 
-                               DepartmentNumber = $values->DepartmentNumber
-                               WHERE SIN = $values->SIN;");
+		$day = strtotime($_POST["DateOfBirth"]);
+		$day = date('Y-m-d H:i:s', $day);
+            $connection->query("UPDATE employees set Name = \"$values[Name]\", 
+                               DateofBirth = \"$day\", Gender = \"$values[Gender]\", 
+                               Address = \"$values[Address]\", PhoneNumber = $values[PhoneNumber], 
+                               Salary = $values[Salary], SupervisorId = $values[SupervisorId], 
+                               DepartmentNumber = $values[DepartmentNumber]
+                               WHERE SIN = $values[SIN];");
             $connection = null;
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
@@ -286,11 +292,12 @@
     {
         $connection = ConnectToDatabase();
         try {
-            $connection->query("INSERT INTO locations VALUES (\"$value->address\");");
+            $connection->query("INSERT INTO locations VALUES (\"$value[Address]\");");
             $connection = null;
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
@@ -300,7 +307,7 @@
     {
         $connection = ConnectToDatabase();
         try {
-            $connection->query("DELETE FROM locations WHERE Address = \"$value->address\";");
+            $connection->query("DELETE FROM locations WHERE Address = \"$value->Address\";");
             $connection = null;
         }
         catch (Exception $e)
