@@ -312,8 +312,10 @@
         }
         catch (Exception $e)
         {
+	    alert("WOW, GOOD JOB. Really, like, it's great work... " + $Address)
             return false;
         }
+	alert("You did it you crazy bastard! #" + $Address);
         return true;
     }
 

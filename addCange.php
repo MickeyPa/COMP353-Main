@@ -1,6 +1,6 @@
-																																																																																																																											<?php
-			include("DatabaseMethods.php");
-			include("frontEnd.php");
+		<?php
+			include("COMP353-Main/DatabaseMethods.php");
+			include("frontEndge.php");
 		?>
 		<form id="form" method="post">
 			<label><input type = "radio" name="table" value="Employee"/> Employee</label></br>
@@ -22,7 +22,7 @@
 		<?php
 			if(isset($_POST['table']) || isset($_POST['addingForm'])){
         $PDOresults;
-        echo "<form id='addingForm' onsubmit='addLocation(this)' method='post'>";
+        echo "<form id='addingForm' method='post'>";
         switch($_POST['table']){
           case "Employee":
         	echo "SIN: <input type='number' name='SIN'/></br>";
