@@ -26,26 +26,6 @@
         return $connection;
     }
 
-    function sendSelectQuery($query)
-    {
-        $q = explode(" ", $query)[0];
-        if (strcasecmp($q, "SELECT") == 0) {
-
-            $connection = ConnectToDatabase();
-            try {
-                $connection->query($query);
-                $connection = null;
-            } catch (Exception $e) {
-                return false;
-            }
-            return true;
-
-        }
-        else {
-            return false;
-        }
-    }
-
     # Section 1
     # Select Key statements.
     # These are for creating the frontend dropdowns for foreign keys in Add transactions.
@@ -302,11 +282,11 @@
     }
 
     # Locations
-    function addLocation($Address)
+    function addLocation($value)
     {
         $connection = ConnectToDatabase();
         try {
-            $connection->query("INSERT INTO locations VALUES ($Address);");
+            $connection->query("INSERT INTO locations VALUES (\"$value->address\");");
             $connection = null;
         }
         catch (Exception $e)
@@ -316,11 +296,11 @@
         return true;
     }
 
-    function deleteLocation($Address)
+    function deleteLocation($value)
     {
         $connection = ConnectToDatabase();
         try {
-            $connection->query("DELETE FROM locations WHERE Address = $Address;");
+            $connection->query("DELETE FROM locations WHERE Address = \"$value->address\";");
             $connection = null;
         }
         catch (Exception $e)
@@ -451,6 +431,130 @@
             return false;
         }
         return true;
+    }
+# Section 4
+    # FAQ (Frequently Asked Queries)
+    # 1. Allows the user to write and send any SELECT query they want.
+    function sendSelectQuery($query)
+    {
+        $q = explode(" ", $query)[0];
+        if (strcasecmp($q, "SELECT") == 0) {
+            $connection = ConnectToDatabase();
+            $results = null;
+            try {
+                $results = $connection->query($query);
+                $connection = null;
+            } catch (Exception $e) {
+                return false;
+            }
+            return $results;
+        }
+        else {
+            return false;
+        }
+    }
+    # 2. Get all employees and the number of dependents they have.
+    function getNumberOfDependents()
+    {
+        $connection = ConnectToDatabase();
+        $results = null;
+        try {
+            $results = $connection->query("SELECT employees.Name, count(dependents.guardian) 
+                                          FROM employees, guardian WHERE employee.SIN = dependents.guardian;");
+            $connection = null;
+        } catch (Exception $e) {
+            return false;
+        }
+        return $results;
+    }
+    # 3. Get the names, genders, and dates of birth of all an employee's dependents
+    function getEmployeeDependents($SIN)
+    {
+        $connection = ConnectToDatabase();
+        $results = null;
+        try {
+            $results = $connection->query("SELECT Name, Gender, DateOfBirth 
+                                              FROM dependents, WHERE guardian=$SIN;");
+            $connection = null;
+        } catch (Exception $e) {
+            return false;
+        }
+        return $results;
+    }
+    # 4. Get all the department managers.
+    function getDepartmentManagers()
+    {
+        $connection = ConnectToDatabase();
+        $results = null;
+        try {
+            $results = $connection->query("SELECT employees.Name, departments.Name 
+                                          FROM employees, departments, WHERE employees.SIN = departments.Manager;");
+            $connection = null;
+        } catch (Exception $e) {
+            return false;
+        }
+        return $results;
+    }
+    # 5. Get all the projects, the employees that are assigned to them, and the hours they've worked on those projects.
+    function getProjectGroups()
+    {
+        $connection = ConnectToDatabase();
+        $results = null;
+        try {
+            $results = $connection->query("SELECT projects.Name, employees.Name, workson.HoursWorked 
+                                          FROM projects, employees, workson 
+                                          WHERE workson.employee = employee.SIN AND workson.projectId = projects.Id
+                                          ORDER BY projects.Id ASC;");
+            $connection = null;
+        } catch (Exception $e) {
+            return false;
+        }
+        return $results;
+    }
+    # 6. Get all Supervisors Names
+    function getSupervisorNames() {
+        $connection = ConnectToDatabase();
+        $results = null;
+        try {
+            $results = $connection->query("SELECT Name FROM employees 
+                                          WHERE SIN IN (SELECT DISTINCT supervisorId FROM employees);");
+            $connection = null;
+        } catch (Exception $e) {
+            return false;
+        }
+        return $results;
+    }
+    # 7. Get all supervisors names and the employees under them.
+    function getSupervisorSupervisedRelations()
+    {
+        $connection = ConnectToDatabase();
+        $results = null;
+        try {
+            # supervisedEmployees is a View
+            $results = $connection->query("SELECT employees.Name, supervisedEmployees.Name
+                                           FROM employees, supervisedEmployees
+                                           WHERE employees.SIN = supervisedEmployees.SupervisorId
+                                           ORDER BY employees.Name;");
+            $connection = null;
+        } catch (Exception $e) {
+            return false;
+        }
+            return $results;
+    }
+    # 8. Get all the employee-department assignments
+    function getEmployeesDepartments()
+    {
+        $connection = ConnectToDatabase();
+        $results = null;
+        try {
+            $results = $connection->query("SELECT employees.Name, departments.Name 
+                                          FROM employees, departments 
+                                          WHERE employee.DepartmentNumber = department.Number;");
+            $connection = null;
+        } catch (Exception $e) {
+            return false;
+        }
+        return $results;
     }
 
 	
