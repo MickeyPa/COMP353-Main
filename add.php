@@ -9,7 +9,7 @@
 			<label><input type = "radio" name="table" value="Location"/> Location</label></br>
 			<label><input type = "radio" name="table" value="DepartmentLocation"/> Department Location </label></br>
 			<label><input type = "radio" name="table" value="Project"/> Project </label></br>
-      <label><input type = "radio" name="table" value="WorksOn"/> Works On </label></br>
+			<label><input type = "radio" name="table" value="WorksOn"/> Works On </label></br>
 		</form>
 		<script>
       $(document).ready(function() {

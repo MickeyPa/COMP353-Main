@@ -174,19 +174,20 @@
         return true;
     }
 
-    function deleteEmployee($SIN)
+    function deleteEmployee($values)
     {
         $connection = ConnectToDatabase();
         try {
-            $connection->query("UPDATE departments SET Manager = null, StartDate = null WHERE Manager = $SIN;");
-            $connection->query("DELETE FROM dependents WHERE Guardian = $SIN;");
-            $connection->query("DELETE FROM workson WHERE Employee = $SIN;");
-            $connection->query("UPDATE employees SET SupervisorId = null WHERE SupervisorId = $SIN;");
-            $connection->query("DELETE FROM employees WHERE SIN = $SIN;");
+            $connection->query("UPDATE departments SET Manager = null, StartDate = null WHERE Manager = $values[SIN];");
+            $connection->query("DELETE FROM dependents WHERE Guardian = $values[SIN];");
+            $connection->query("DELETE FROM workson WHERE Employee = $values[SIN];");
+            $connection->query("UPDATE employees SET SupervisorId = null WHERE SupervisorId = $values[SIN];");
+            $connection->query("DELETE FROM employees WHERE SIN = $values[SIN];");
             $connection = null;
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
@@ -197,13 +198,16 @@
     {
         $connection = ConnectToDatabase();
         try {
+			$day = strtotime($_POST["DateOfBirth"]);
+		$day = date('Y-m-d H:i:s', $day);
             $connection->query("INSERT INTO dependents (SIN, Name, DateOfBirth, Gender, Guardian) 
-                               VALUES ($values->SIN, $values->Name, $values->DateOfBirth, 
-                               $values->Gender, $values->Guardian)");
+                               VALUES ($values[SIN], \"$values[Name]\", \"$day\", 
+                               \"$values[Gender]\", $values[Guardian])");
             $connection = null;
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
@@ -221,20 +225,22 @@
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
     }
 
-    function deleteDependent($SIN)
+    function deleteDependent($value)
     {
         $connection = ConnectToDatabase();
         try {
-            $connection->query("DELETE FROM dependents WHERE SIN = $SIN;");
+            $connection->query("DELETE FROM dependents WHERE SIN = $value[SIN];");
             $connection = null;
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
@@ -245,12 +251,15 @@
     {
         $connection = ConnectToDatabase();
         try {
+			$day = strtotime($_POST["StartDate"]);
+			$day = date('Y-m-d H:i:s', $day);
             $connection->query("INSERT INTO departments (Number, Name, Manager, StartDate) 
-                               VALUES ($values->Number, $values->Name, $values->Manager, $values->StartDate)");
+                               VALUES ($values[Number], \"$values[Name]\", $values[Manager], \"$day\")");
             $connection = null;
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
@@ -267,21 +276,23 @@
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
     }
 
-    function deleteDepartment($Number)
+    function deleteDepartment($values)
     {
         $connection = ConnectToDatabase();
         try {
-            $connection->query("DELETE FROM departmentlocations WHERE DepartmentNumber = $Number;");
-            $connection->query("DELETE FROM departments WHERE Number = $Number;");
+            $connection->query("DELETE FROM departmentlocations WHERE DepartmentNumber = $values[Number];");
+            $connection->query("DELETE FROM departments WHERE Number = $values[Number];");
             $connection = null;
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
@@ -307,11 +318,12 @@
     {
         $connection = ConnectToDatabase();
         try {
-            $connection->query("DELETE FROM locations WHERE Address = \"$value->Address\";");
+            $connection->query("DELETE FROM locations WHERE Address = \"$value[Address]\";");
             $connection = null;
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
@@ -323,11 +335,12 @@
         $connection = ConnectToDatabase();
         try {
             $connection->query("INSERT INTO departmentlocations (DepartmentNumber, Address) 
-                               VALUES ($values->DepartmentNumber, $values->Address)");
+                               VALUES ($values[DepartmentNumber], $values[Address])");
             $connection = null;
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
@@ -343,6 +356,7 @@
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
@@ -354,11 +368,12 @@
         $connection = ConnectToDatabase();
         try {
             $connection->query("INSERT INTO projects (Id, Name, Address) 
-                               VALUES ($values->Id, $values->Name, $values->Address)");
+                               VALUES ($values[Id], \"$values[Name]\", $values[Address])");
             $connection = null;
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
@@ -374,21 +389,23 @@
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
     }
 
-    function deleteProject($Id)
+    function deleteProject($values)
     {
         $connection = ConnectToDatabase();
         try {
-            $connection->query("DELETE FROM workson WHERE ProjectId = $Id;");
-            $connection->query("DELETE FROM projects WHERE Number = $Id;");
+            $connection->query("DELETE FROM workson WHERE ProjectId = $values[Id];");
+            $connection->query("DELETE FROM projects WHERE Number = $values[Id];");
             $connection = null;
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
@@ -400,11 +417,12 @@
         $connection = ConnectToDatabase();
         try {
             $connection->query("INSERT INTO workson (Employee, ProjectId, HoursWorked) 
-                               VALUES ($values->Employee, $values->ProjectId, $values->HoursWorked)");
+                               VALUES ($values[Employee], $values[ProjectId], $values[HoursWorked]");
             $connection = null;
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
@@ -420,6 +438,7 @@
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
@@ -435,6 +454,7 @@
         }
         catch (Exception $e)
         {
+			echo $e.getMessage;
             return false;
         }
         return true;
