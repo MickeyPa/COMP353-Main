@@ -150,7 +150,7 @@
 							{
 								foreach($row as $column)
 								{
-									echo "<option value=$column> $column</option>";
+									echo "<option value='".$column."'> $column</option>";
 								}
 							}
             	echo "</select></br>";
@@ -165,13 +165,7 @@
 							{
 								foreach($row as $column)
 								{
-									$t++;
-									if($t == 1)
-										echo "<option value=".$column.">";
-									if($t == 2){
-										echo $column."</option>";
-										$t = 0;
-									}
+									echo "<option value='".$column."'>".$column."</option>";
 								}
 							}
             	echo "</select></br>";
@@ -195,18 +189,18 @@
 								}
 							}
             	echo "</select></br>";
-		$PDOresults = getProjectsKeys();
-            	echo "Project: <select name=ProjectId'>";
+				$PDOresults = getProjectsKeys();
+            	echo "Project: <select name='ProjectId'>";
           		
             	while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
 							{
 								foreach($row as $column)
 								{
-									echo "<option value=$column> $column</option>";
+									echo "<option value=$column>$column</option>";
 								}
 							}
             	echo "</select></br>";
-		echo "Hours Worked: <input type='number' name='HoursWorked'/></br>";
+				echo "Hours Worked: <input type='number' name='HoursWorked'/></br>";
             break;
 	
           default: echo "test2";

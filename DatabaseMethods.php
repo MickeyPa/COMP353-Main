@@ -303,6 +303,7 @@
     {
         $connection = ConnectToDatabase();
         try {
+			echo $value[Address];
             $connection->query("INSERT INTO locations VALUES (\"$value[Address]\");");
             $connection = null;
         }
@@ -318,6 +319,7 @@
     {
         $connection = ConnectToDatabase();
         try {
+			echo $value[Address];
             $connection->query("DELETE FROM locations WHERE Address = \"$value[Address]\";");
             $connection = null;
         }
@@ -335,7 +337,7 @@
         $connection = ConnectToDatabase();
         try {
             $connection->query("INSERT INTO departmentlocations (DepartmentNumber, Address) 
-                               VALUES ($values[DepartmentNumber], $values[Address])");
+                               VALUES ($values[DepartmentNumber], \"$values[Address]\")");
             $connection = null;
         }
         catch (Exception $e)
@@ -350,8 +352,9 @@
     {
         $connection = ConnectToDatabase();
         try {
+			$keyValues = explode("|", $keyValues);
             $connection->query("DELETE FROM departmentlocations 
-                               WHERE DepartmentNumber = $keyValues->DepartmentNumber AND Address = $keyValues->Address;");
+                               WHERE DepartmentNumber = $keyValues[0] AND Address = \"$keyValues[1]\";");
             $connection = null;
         }
         catch (Exception $e)
@@ -368,7 +371,7 @@
         $connection = ConnectToDatabase();
         try {
             $connection->query("INSERT INTO projects (Id, Name, Address) 
-                               VALUES ($values[Id], \"$values[Name]\", $values[Address])");
+                               VALUES ($values[Id], \"$values[Name]\", \"$values[Address]\")");
             $connection = null;
         }
         catch (Exception $e)
@@ -400,7 +403,7 @@
         $connection = ConnectToDatabase();
         try {
             $connection->query("DELETE FROM workson WHERE ProjectId = $values[Id];");
-            $connection->query("DELETE FROM projects WHERE Number = $values[Id];");
+            $connection->query("DELETE FROM projects WHERE Id = $values[Id];");
             $connection = null;
         }
         catch (Exception $e)
@@ -417,7 +420,7 @@
         $connection = ConnectToDatabase();
         try {
             $connection->query("INSERT INTO workson (Employee, ProjectId, HoursWorked) 
-                               VALUES ($values[Employee], $values[ProjectId], $values[HoursWorked]");
+                               VALUES ($values[Employee], $values[ProjectId], $values[HoursWorked])");
             $connection = null;
         }
         catch (Exception $e)
@@ -448,8 +451,9 @@
     {
         $connection = ConnectToDatabase();
         try {
+			$keyValues = explode("|", $keyValues);
             $connection->query("DELETE FROM workson 
-                               WHERE Employee = $keyValues->Employee AND ProjectId = $keyValues->ProjectId;");
+                               WHERE Employee = $keyValues[0] AND ProjectId = $keyValues[1];");
             $connection = null;
         }
         catch (Exception $e)
@@ -477,6 +481,7 @@
             return $results;
         }
         else {
+			echo "The query entered was incorrect. Please try again.";
             return false;
         }
     }
@@ -487,9 +492,10 @@
         $results = null;
         try {
             $results = $connection->query("SELECT employees.Name, count(dependents.guardian) 
-                                          FROM employees, guardian WHERE employee.SIN = dependents.guardian;");
+                                          FROM employees, dependents WHERE employees.SIN = dependents.guardian;");
             $connection = null;
         } catch (Exception $e) {
+			echo $e.getMessage;
             return false;
         }
         return $results;
@@ -501,9 +507,10 @@
         $results = null;
         try {
             $results = $connection->query("SELECT Name, Gender, DateOfBirth 
-                                              FROM dependents, WHERE guardian=$SIN;");
+                                              FROM dependents WHERE guardian=$SIN;");
             $connection = null;
         } catch (Exception $e) {
+			echo $e.getMessage;
             return false;
         }
         return $results;
@@ -514,10 +521,11 @@
         $connection = ConnectToDatabase();
         $results = null;
         try {
-            $results = $connection->query("SELECT employees.Name, departments.Name 
-                                          FROM employees, departments, WHERE employees.SIN = departments.Manager;");
+            $results = $connection->query("SELECT employees.name, departments.Name 
+                                          FROM employees, departments WHERE employees.SIN = departments.Manager;");
             $connection = null;
         } catch (Exception $e) {
+			echo $e.getMessage;
             return false;
         }
         return $results;
@@ -528,12 +536,13 @@
         $connection = ConnectToDatabase();
         $results = null;
         try {
-            $results = $connection->query("SELECT projects.Name, employees.Name, workson.HoursWorked 
+            $results = $connection->query("SELECT projects.name, employees.Name, workson.HoursWorked 
                                           FROM projects, employees, workson 
-                                          WHERE workson.employee = employee.SIN AND workson.projectId = projects.Id
+                                          WHERE workson.employee = employees.SIN AND workson.projectId = projects.Id
                                           ORDER BY projects.Id ASC;");
             $connection = null;
         } catch (Exception $e) {
+			echo $e.getMessage;
             return false;
         }
         return $results;
@@ -547,6 +556,7 @@
                                           WHERE SIN IN (SELECT DISTINCT supervisorId FROM employees);");
             $connection = null;
         } catch (Exception $e) {
+			echo $e.getMessage;
             return false;
         }
         return $results;
@@ -564,6 +574,7 @@
                                            ORDER BY employees.Name;");
             $connection = null;
         } catch (Exception $e) {
+			echo $e.getMessage;
             return false;
         }
             return $results;
@@ -574,11 +585,12 @@
         $connection = ConnectToDatabase();
         $results = null;
         try {
-            $results = $connection->query("SELECT employees.Name, departments.Name 
+            $results = $connection->query("SELECT employees.name, departments.Name 
                                           FROM employees, departments 
-                                          WHERE employee.DepartmentNumber = department.Number;");
+                                          WHERE employees.DepartmentNumber = departments.Number;");
             $connection = null;
         } catch (Exception $e) {
+			echo $e.getMessage;
             return false;
         }
         return $results;

@@ -36,13 +36,13 @@
 					deleteLocation($_POST);
 					break;
 				case "DepartmentLocation":
-					deleteDepartmentLocation($_POST);
+					deleteDepartmentLocation($_POST['Values']);
 					break;
 				case "Project":
 					deleteProject($_POST);
 					break;
 				case "WorksOn":
-					deleteWorksOn($_POST);
+					deleteWorksOn($_POST['Values']);
 					break;
 			}
 		}
@@ -83,7 +83,7 @@
 				{
 					$t++;
 					if($t == 1)
-						echo "<option value=".$column.">";
+						echo "<option value='$column'>";
 					if($t == 2)
 						echo $column."</option>";
 					if($t == 5)
@@ -119,24 +119,27 @@
 			{
 				foreach($row as $column)
 				{
-						echo "<option value=".$column.">".$column."</option>";
+						echo "<option value='".$column."'>".$column."</option>";
 				}
 			}
 			echo "</select></br>";
 			break;
 		  case "DepartmentLocation":
 			$PDOresults = getDepartmentLocations();
-            		echo "Department Location: <select name='SIN'>";
+            		echo "Department Location: <select name='Values'>";
           		
             		while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
 			{
 				foreach($row as $column)
 				{
 					$t++;
-					if($t == 1)
-						echo "<option value=".$column.">";
+					
+					if($t == 1){
+						echo "<option value='".$column;
+						$temp = $column;
+					}
 					if($t == 2){
-						echo $column."</option>";
+					echo "|".$column."'>".$temp.": ".$column."</option>";
 						$t = 0;
 					}
 				}
@@ -164,15 +167,19 @@
 			break;
 		  case "WorksOn":
 			$PDOresults = getWorksOn();
-            		echo "Works On: <select name='SIN'>";
+            		echo "Works On: <select name='Values'>";
           		
             		while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
 			{
 				foreach($row as $column)
 				{
 					$t++;
-					if($t == 1)
-						echo "<option value=".$column.">".$column."</option>";
+					if($t == 1){
+						echo "<option value='".$column;
+						$temp = $column;
+					}
+					if($t == 2)
+						echo "|".$column."'>".$temp.": ".$column."</option>";
 					if($t == 3)
 						$t = 0;
 				}
