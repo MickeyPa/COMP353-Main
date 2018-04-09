@@ -146,7 +146,6 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
@@ -168,7 +167,6 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
@@ -187,7 +185,6 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
@@ -207,7 +204,6 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
@@ -227,7 +223,6 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
@@ -242,7 +237,6 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
@@ -261,7 +255,6 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
@@ -280,7 +273,6 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
@@ -296,7 +288,6 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
@@ -313,7 +304,6 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
@@ -329,7 +319,6 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
@@ -346,7 +335,6 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
@@ -363,7 +351,6 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
@@ -380,7 +367,6 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
@@ -396,7 +382,6 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
@@ -412,7 +397,6 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
@@ -429,7 +413,6 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
@@ -445,7 +428,6 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
@@ -462,16 +444,12 @@
         }
         catch (Exception $e)
         {
-			echo $e.getMessage;
             return false;
         }
         return true;
     }
-
-
-    # Section 4
+# Section 4
     # FAQ (Frequently Asked Queries)
-
     # 1. Allows the user to write and send any SELECT query they want.
     function sendSelectQuery($query)
     {
@@ -492,7 +470,6 @@
             return false;
         }
     }
-
     # 2. Get the names, genders, and dates of birth of all an employee's dependents
     function getEmployeeDependents($SIN)
     {
@@ -503,12 +480,10 @@
                                               FROM dependents WHERE guardian=$SIN;");
             $connection = null;
         } catch (Exception $e) {
-			echo $e.getMessage;
             return false;
         }
         return $results;
     }
-
     # 3. Get all the department managers.
     function getDepartmentManagers()
     {
@@ -519,12 +494,10 @@
                                           FROM employees, departments WHERE employees.SIN = departments.Manager;");
             $connection = null;
         } catch (Exception $e) {
-			echo $e.getMessage;
             return false;
         }
         return $results;
     }
-
     # 4. Get all the projects, the employees that are assigned to them, and the hours they've worked on those projects.
     function getProjectGroups()
     {
@@ -537,12 +510,10 @@
                                           ORDER BY projects.Id ASC;");
             $connection = null;
         } catch (Exception $e) {
-			echo $e.getMessage;
             return false;
         }
         return $results;
     }
-
     # 5. Get all Supervisors Names
     function getSupervisorNames() {
         $connection = ConnectToDatabase();
@@ -552,12 +523,10 @@
                                           WHERE SIN IN (SELECT DISTINCT supervisorId FROM employees);");
             $connection = null;
         } catch (Exception $e) {
-			echo $e.getMessage;
             return false;
         }
         return $results;
     }
-
     # 6. Get all supervisors names and the employees under them.
     function getSupervisorSupervisedRelations()
     {
@@ -571,12 +540,10 @@
                                            ORDER BY employees.Name;");
             $connection = null;
         } catch (Exception $e) {
-			echo $e.getMessage;
             return false;
         }
             return $results;
     }
-    
     # 7. Get all the employee-department assignments
     function getEmployeesDepartments()
     {
@@ -588,7 +555,6 @@
                                           WHERE employees.DepartmentNumber = departments.Number;");
             $connection = null;
         } catch (Exception $e) {
-			echo $e.getMessage;
             return false;
         }
         return $results;

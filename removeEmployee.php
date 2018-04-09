@@ -21,30 +21,34 @@
 	
 		<?php
 		if(isset($_POST['formName'])){
-			echo $_POST['formName'];
+			$working;
 			switch($_POST['formName']){
 				case "Employee":
-					deleteEmployee($_POST);
+					$working = deleteEmployee($_POST);
 					break;
 				case "Dependent":
-					deleteDependent($_POST);
+					$working = deleteDependent($_POST);
 					break;
 				case "Department":
-					deleteDepartment($_POST);
+					$working = deleteDepartment($_POST);
 					break;
 				case "Location":
-					deleteLocation($_POST);
+					$working = deleteLocation($_POST);
 					break;
 				case "DepartmentLocation":
-					deleteDepartmentLocation($_POST['Values']);
+					$working = deleteDepartmentLocation($_POST['Values']);
 					break;
 				case "Project":
-					deleteProject($_POST);
+					$working = deleteProject($_POST);
 					break;
 				case "WorksOn":
-					deleteWorksOn($_POST['Values']);
+					$working = deleteWorksOn($_POST['Values']);
 					break;
 			}
+			if($working)
+				echo "The tuple was successfuly deleted.";
+			else
+				echo "There was an error deleting the tuple. Please try again.";
 		}
 			if(isset($_POST['table']) || isset($_POST['formName'])){
 		$TableType;

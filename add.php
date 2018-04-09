@@ -21,30 +21,34 @@
 	
 		<?php
 		if(isset($_POST['formName'])){
-			echo $_POST['formName'];
+			$working;
 			switch($_POST['formName']){
 				case "Employee":
-					addEmployee($_POST);
+					$working = addEmployee($_POST);
 					break;
 				case "Dependent":
-					addDependent($_POST);
+					$working = addDependent($_POST);
 					break;
 				case "Department":
-					addDepartment($_POST);
+					$working = addDepartment($_POST);
 					break;
 				case "Location":
-					addLocation($_POST);
+					$working = addLocation($_POST);
 					break;
 				case "DepartmentLocation":
-					addDepartmentLocation($_POST);
+					$working = addDepartmentLocation($_POST);
 					break;
 				case "Project":
-					addProject($_POST);
+					$working = addProject($_POST);
 					break;
 				case "WorksOn":
-					addWorksOn($_POST);
+					$working = addWorksOn($_POST);
 					break;
 			}
+			if($working)
+				echo "The tuple was successfuly added.";
+			else
+				echo "There was an error adding the tuple. Please try again.";
 		}
 			if(isset($_POST['table']) || isset($_POST['formName'])){
 		$TableType;

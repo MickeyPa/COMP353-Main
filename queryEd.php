@@ -6,7 +6,6 @@
 		<form id="formE" method="post">
 		Choose your query: <select id='query' name='query' onchange="ownQuery()">
 		<option value="Select">Create your own query</option>
-		<option value="NumberDependents">Get all employees and the number of dependents they have.</option>
 		<option value="EmployeeDependents">Get the names, genders, and dates of birth of all an employee's dependents</option>
 		<option value="DepartmentManagers">Get all the department managers.</option>
 		<option value="ProjectGroups">Get all the projects, the employees that are assigned to them, and the hours they've worked on those projects.</option>
@@ -39,14 +38,10 @@
 		
 		<?php
 		if(isset($_POST['query'])){
-			echo $_POST['query'];
 			$PDOresults;
 			switch($_POST['query']){
 				case "Select":
 					$PDOresults = sendSelectQuery($_POST['selectQuery']);
-					break;
-				case "NumberDependents":
-					$PDOresults = getNumberOfDependents();
 					break;
 				case "EmployeeDependents":
 					$PDOresults = getEmployeeDependents($_POST['selectQuery']);

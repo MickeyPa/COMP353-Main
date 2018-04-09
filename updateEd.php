@@ -40,25 +40,29 @@
 		<?php
 		if(isset($_POST['formName']))
 		{
-			echo $_POST['formName'];
+			$working;
 			switch($_POST['formName'])
 			{
 				case "Employee":
-					modifyEmployee($_POST);
+					$working = modifyEmployee($_POST);
 					break;
 				case "Dependents":
-					modifyDependent($_POST);
+					$working = modifyDependent($_POST);
 					break;
 				case "Department":
-					modifyDepartment($_POST);
+					$working = modifyDepartment($_POST);
 					break;
 				case "Project":
-					modifyProject($_POST);
+					$working = modifyProject($_POST);
 					break;
 				case "WorksOn":
-					modifyWorksOn($_POST);
+					$working = modifyWorksOn($_POST);
 					break;
 			}
+			if($working)
+				echo "The tuple was successfuly updated.";
+			else
+				echo "There was an error updating the tuple. Please try again.";
 		}
 		if(isset($_POST['table']) || isset($_POST['formName']))
 		{
