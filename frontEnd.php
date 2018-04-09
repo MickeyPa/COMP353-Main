@@ -11,7 +11,7 @@
         <p> The Social Hour Intelligence Team. (aka The S.H.I.T.) </p>
 	<div id = "firstBox">
 		<a id = "add" href="add.php">Add</a>  
-		<a id = "update" href="updateEd.php">Update</a>  
+		<a id = "update" href="update.php">Update</a>  
 		<a id = "remove" href="removeEmployee.php">Remove</a>  
-		<a href="queryEd.php">Query</a>
+		<a href="query.php">Query</a>
 	</div>

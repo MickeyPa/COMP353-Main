@@ -12,31 +12,57 @@
 		<script>
       			$(document).ready(function()
 			{
-        			$('input[type=radio][name=table]').change(function(){$(document.getElementById('formE')).submit();});
-      			});
+				$('input[type=radio][name=table]').change(function(){$(document.getElementById('formE')).submit();});
+      			
+					var form = document.getElementById('addingForm').elements;
+					for(var x = 2; x < form.length ; x++){
+						form[x].disabled = true;
+					}
+        			});
+		
+			function enable(){
+				var form = document.getElementById('addingForm').elements;
+				for(var x = 0; x < form.length ; x++){
+					form[x].disabled = false;
+				}
+				placing();
+			}
+			
+			function placing(){
+				var form = document.getElementById('addingForm').elements;
+				var tuple = document.getElementById('tuple').value;
+				tuple = tuple.split("|");
+				for(var x = 2; x < form.length-1 ; x++){
+					form[x].value = tuple[x-2];
+				}
+			}
 		</script>	
 		<?php
 		if(isset($_POST['formName']))
 		{
-			echo $_POST['formName'];
+			$working;
 			switch($_POST['formName'])
 			{
 				case "Employee":
-					modifyEmployee($_POST);
+					$working = modifyEmployee($_POST);
 					break;
-				case "Dependent":
-					modifyDependent($_POST);
+				case "Dependents":
+					$working = modifyDependent($_POST);
 					break;
 				case "Department":
-					modifyDepartment($_POST);
+					$working = modifyDepartment($_POST);
 					break;
 				case "Project":
-					modifyProject($_POST);
+					$working = modifyProject($_POST);
 					break;
 				case "WorksOn":
-					modifyWorksOn($_POST);
+					$working = modifyWorksOn($_POST);
 					break;
 			}
+			if($working)
+				echo "The tuple was successfuly updated.";
+			else
+				echo "There was an error updating the tuple. Please try again.";
 		}
 		if(isset($_POST['table']) || isset($_POST['formName']))
 		{
@@ -48,25 +74,29 @@
 			$PDOresults;
         		echo "<form id='addingForm' method='post'>";
 			echo "<input type='text' name='formName' value=".$TableType." hidden/>";
+			echo "Choose a tuple to update: <select id='tuple' name='tuple' onclick='enable()' onchange='placing()'>";
         switch($TableType){
           case "Employee":
-		$PDOresults = getEmployees();
-        	echo "SIN: <select> name='sin'>";		
+		$PDOresults = getEmployees();	
 		while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
 		{
 			foreach($row as $column)
-			{
-				$t++;
-				if($t == 1)
-				{
-					echo "<option value=".$column.">";
-					echo $column."</option>";
-				}
-				if($t == 9)
-					$t = 0;
-			}
+								{
+									$t++;
+									if($t == 1){
+										$temp = $column;
+										echo "<option value='".$column;
+									}
+									else if($t == 9){
+										echo "|".$column."'>".$temp."</option>";
+										$t = 0;
+									}
+									else
+										echo "|".$column;
+								}
 		}
 		echo "</select></br>";
+        			echo "<input type='number' name='SIN' hidden/>";
             	echo "Name: <input type='text' name='Name'/></br>";
             	echo "Date Of Birth: <input type='date' name='DateOfBirth'/></br>";
             	echo "Gender: <input type='text' name='Gender'/></br>";
@@ -105,12 +135,31 @@
             
             
             case "Dependents":
-        			echo "SIN: <input type='number' name='SIN'/></br>";
-            	echo "Name: <input type='text' name='name'/></br>";
-            	echo "Date Of Birth: <input type='date' name='dateofbirth'/></br>";
-            	echo "Gender: <input type='text' name='gender'/></br>";
+				$PDOresults = getDependents();	
+		while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
+		{
+			foreach($row as $column)
+								{
+									$t++;
+									if($t == 1){
+										$temp = $column;
+										echo "<option value='".$column;
+									}
+									else if($t == 5){
+										echo "|".$column."'>".$temp."</option>";
+										$t = 0;
+									}
+									else
+										echo "|".$column;
+								}
+		}
+		echo "</select></br>";
+        			echo "<input type='number' name='SIN' hidden/>";
+            	echo "Name: <input type='text' name='Name'/></br>";
+            	echo "Date Of Birth: <input type='date' name='DateOfBirth'/></br>";
+            	echo "Gender: <input type='text' name='Gender'/></br>";
 		$PDOresults = getEmployees();
-            	echo "Guardian: <select name='guardianID'>";
+            	echo "Guardian: <select name='Guardian'>";
           		$t = 0;
             	while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
 							{
@@ -128,9 +177,29 @@
             	echo "</select>";
             break;
             case "Department":
-        			echo "Name: <input type='text' name='name'/></br>";
+			$PDOresults = getDepartments();	
+		while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
+		{
+			foreach($row as $column)
+								{
+									$t++;
+									if($t == 1){
+										$temp = $column;
+										echo "<option value='".$column;
+									}
+									else if($t == 4){
+										echo "|".$column."'>".$temp."</option>";
+										$t = 0;
+									}
+									else
+										echo "|".$column;
+								}
+		}
+		echo "</select></br>";
+		echo "<input type='number' name='Number' hidden/>";
+        			echo "Name: <input type='text' name='Name'/></br>";
 		$PDOresults = getEmployees();
-            	echo "Manager: <select name='managerID'>";
+            	echo "Manager: <select name='Manager'>";
           		$t = 0;
             	while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
 							{
@@ -145,8 +214,8 @@
 										$t = 0;
 								}
 							}
-            	echo "</select>";
-            	echo "Start Date: <input type='date' name='startdate'/></br>";
+            	echo "</select></br>";
+            	echo "Start Date: <input type='date' name='StartDate'/></br>";
             break;
             case "Location":
         			echo "Address: <input type='text' name='address'/></br>";
@@ -166,57 +235,65 @@
 		echo "Address: <input type='text' name='address'/></br>";
             break;
             case "Project":
-        			echo "Id: <input type='number' name='id'/></br>";
-            	echo "Name: <input type='text' name='name'/></br>";
-		$PDOresults = getDepartmentLocations();
-            	echo "Department Location: <select name='depLocation'>";
-          		$t = 0;
+				
+				$PDOresults = getProjects();
+				$t = 0;
             	while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
 							{
 								foreach($row as $column)
 								{
 									$t++;
-									if($t == 1)
-										echo "<option value=".$column.">";
-									if($t == 2){
-										echo $column."</option>";
+									if($t == 1){
+										$temp = $column;
+										echo "<option value='".$column;
+									}
+									if($t == 2)
+										echo "|".$column;
+									if($t == 3){
+										echo "|".$column."'>".$temp."</option>";
 										$t = 0;
 									}
 								}
 							}
-            	echo "</select>";
+            	echo "</select></br>";
+        			echo "<input type='number' name='Id' hidden/>";
+            	echo "Name: <input type='text' name='Name'/></br>";
+				echo "Address: <select name='Address'>";
+				$PDOresults = getLocations();
+            	while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
+							{
+								foreach($row as $column)
+								{
+									echo "<option value='".$column."'>".$column."</option>";
+								}
+							}
+            	echo "</select></br>";
             break;
             case "WorksOn":
-        			$PDOresults = getEmployees();
-            	echo "Manager: <select name='managerID'>";
-          		
-            	$t = 0;
-            	while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
-							{
-								foreach($row as $column)
+				$PDOresults = getWorksOn();
+				while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
+				{
+					foreach($row as $column)
 								{
 									$t++;
-									if($t == 1)
-										echo "<option value=".$column.">";
-									if($t == 2)
-										echo $column."</option>";
-									if($t == 9)
+									if($t == 1){
+										$temp = $column;
+										echo "<option value='".$column;
+									}
+									else if($t == 2){
+										$temp2 = $column;
+										echo "|".$column;
+									}
+									else if($t == 3){
+										echo "|".$column."'>Employee ".$temp.": Project ".$temp2."</option>";
 										$t = 0;
+									}
 								}
-							}
-            	echo "</select>";
-		$PDOresults = getProjectsKeys();
-            	echo "Project: <select name=projectID'>";
-          		
-            	while($PDOresults != NULL && $row = $PDOresults->fetch(PDO::FETCH_ASSOC))
-							{
-								foreach($row as $column)
-								{
-									echo "<option value=$column> $column</option>";
-								}
-							}
-            	echo "</select>";
-		echo "SIN: <input type='number' name='SIN'/></br>";
+				}
+				echo "</select></br>";
+				echo "<input type='number' name='Employee' hidden/>";
+				echo "<input type='number' name='ProjectId' hidden/>";
+				echo "<input type='number' name='HoursWorked' /></br>";
             break;
 	
           default: echo "test2";
