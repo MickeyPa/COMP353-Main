@@ -134,7 +134,7 @@
     {
         $connection = ConnectToDatabase();
         try {
-		$day = strtotime($_POST["DateOfBirth"]);
+		$day = strtotime($values["DateOfBirth"]);
 		$day = date('Y-m-d H:i:s', $day);
             $connection->query("INSERT INTO employees 
                                (SIN, Name, DateOfBirth, Gender, Address, PhoneNumber, 
@@ -156,7 +156,7 @@
     {
         $connection = ConnectToDatabase();
         try {
-		$day = strtotime($_POST["DateOfBirth"]);
+		$day = strtotime($values["DateOfBirth"]);
 		$day = date('Y-m-d H:i:s', $day);
             $connection->query("UPDATE employees set Name = \"$values[Name]\", 
                                DateofBirth = \"$day\", Gender = \"$values[Gender]\", 
@@ -198,7 +198,7 @@
     {
         $connection = ConnectToDatabase();
         try {
-			$day = strtotime($_POST["DateOfBirth"]);
+			$day = strtotime($values["DateOfBirth"]);
 		$day = date('Y-m-d H:i:s', $day);
             $connection->query("INSERT INTO dependents (SIN, Name, DateOfBirth, Gender, Guardian) 
                                VALUES ($values[SIN], \"$values[Name]\", \"$day\", 
@@ -217,10 +217,12 @@
     {
         $connection = ConnectToDatabase();
         try {
-            $connection->query("UPDATE dependents set Name = $values->Name, 
-                               DateofBirth = $values->DateOfBirth, Gender = $values->Gender, 
-                               Guardian = $values->Guardian
-                               WHERE SIN = $values->SIN;");
+			$day = strtotime($values["DateOfBirth"]);
+			$day = date('Y-m-d H:i:s', $day);
+            $connection->query("UPDATE dependents set Name = \"$values[Name]\", 
+                               DateofBirth = \"$day\", Gender = \"$values[Gender]\", 
+                               Guardian = $values[Guardian]
+                               WHERE SIN = $values[SIN];");
             $connection = null;
         }
         catch (Exception $e)
@@ -269,9 +271,11 @@
     {
         $connection = ConnectToDatabase();
         try {
-            $connection->query("UPDATE departments set Name = $values->Name, 
-                               Manager = $values->Manager, StartDate = $values->StartDate
-                               WHERE Number = $values->Number;");
+			$day = strtotime($values["StartDate"]);
+			$day = date('Y-m-d H:i:s', $day);
+            $connection->query("UPDATE departments set Name = \"$values[Name]\", 
+                               Manager = $values[Manager], StartDate = \"$day\"
+                               WHERE Number = $values[Number];");
             $connection = null;
         }
         catch (Exception $e)
@@ -386,8 +390,8 @@
     {
         $connection = ConnectToDatabase();
         try {
-            $connection->query("UPDATE projects set Name = $values->Name, Address = $values->Address
-                               WHERE Id = $values->Id;");
+            $connection->query("UPDATE projects set Name = \"$values[Name]\", Address = \"$values[Address]\"
+                               WHERE Id = $values[Id];");
             $connection = null;
         }
         catch (Exception $e)
@@ -435,8 +439,8 @@
     {
         $connection = ConnectToDatabase();
         try {
-            $connection->query("UPDATE workson set HoursWorked = $values->HoursWorked
-                               WHERE Employee = $values->Employee AND ProjectId = $values->ProjectId;");
+            $connection->query("UPDATE workson set HoursWorked = $values[HoursWorked]
+                               WHERE Employee = $values[Employee] AND ProjectId = $values[ProjectId];");
             $connection = null;
         }
         catch (Exception $e)
