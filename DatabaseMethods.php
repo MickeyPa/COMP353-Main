@@ -467,8 +467,11 @@
         }
         return true;
     }
-# Section 4
+
+
+    # Section 4
     # FAQ (Frequently Asked Queries)
+
     # 1. Allows the user to write and send any SELECT query they want.
     function sendSelectQuery($query)
     {
@@ -489,22 +492,8 @@
             return false;
         }
     }
-    # 2. Get all employees and the number of dependents they have.
-    function getNumberOfDependents()
-    {
-        $connection = ConnectToDatabase();
-        $results = null;
-        try {
-            $results = $connection->query("SELECT employees.Name, count(dependents.guardian) 
-                                          FROM employees, dependents WHERE employees.SIN = dependents.guardian;");
-            $connection = null;
-        } catch (Exception $e) {
-			echo $e.getMessage;
-            return false;
-        }
-        return $results;
-    }
-    # 3. Get the names, genders, and dates of birth of all an employee's dependents
+
+    # 2. Get the names, genders, and dates of birth of all an employee's dependents
     function getEmployeeDependents($SIN)
     {
         $connection = ConnectToDatabase();
@@ -519,7 +508,8 @@
         }
         return $results;
     }
-    # 4. Get all the department managers.
+
+    # 3. Get all the department managers.
     function getDepartmentManagers()
     {
         $connection = ConnectToDatabase();
@@ -534,7 +524,8 @@
         }
         return $results;
     }
-    # 5. Get all the projects, the employees that are assigned to them, and the hours they've worked on those projects.
+
+    # 4. Get all the projects, the employees that are assigned to them, and the hours they've worked on those projects.
     function getProjectGroups()
     {
         $connection = ConnectToDatabase();
@@ -551,7 +542,8 @@
         }
         return $results;
     }
-    # 6. Get all Supervisors Names
+
+    # 5. Get all Supervisors Names
     function getSupervisorNames() {
         $connection = ConnectToDatabase();
         $results = null;
@@ -565,7 +557,8 @@
         }
         return $results;
     }
-    # 7. Get all supervisors names and the employees under them.
+
+    # 6. Get all supervisors names and the employees under them.
     function getSupervisorSupervisedRelations()
     {
         $connection = ConnectToDatabase();
@@ -583,7 +576,8 @@
         }
             return $results;
     }
-    # 8. Get all the employee-department assignments
+    
+    # 7. Get all the employee-department assignments
     function getEmployeesDepartments()
     {
         $connection = ConnectToDatabase();
