@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <title>Warm-up Project</title>
+        <title>Main Project</title>
         <meta charset="utf-8"/>
         <script src = "frontEnd.js"></script>
 	<link rel="stylesheet" type="text/css" href="frontEnd.css">
