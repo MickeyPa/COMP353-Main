@@ -12,6 +12,6 @@
 	<div id = "firstBox">
 		<a id = "add" href="add.php">Add</a>  
 		<a id = "update" href="update.php">Update</a>  
-		<a id = "remove" href="removeEmployee.php">Remove</a>  
+		<a id = "remove" href="remove.php">Remove</a>
 		<a href="query.php">Query</a>
 	</div>
